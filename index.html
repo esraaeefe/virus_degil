@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>😽</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ffd6e8, #e8c8ff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Comfortaa', cursive;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Gift box */
+  .gift-box {
+    width: 260px;
+    height: 260px;
+    background: linear-gradient(135deg, #f8b0d4, #e3a7f3);
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.6s ease, opacity 0.5s ease;
+    z-index: 1;
+  }
+  .gift-box:hover { transform: scale(1.07); }
+
+  /* Ribbons and bow */
+  .ribbon-vertical, .ribbon-horizontal {
+    position: absolute;
+    border-radius: 5px;
+    background: #ff6fb5;
+  }
+  .ribbon-vertical { width: 25px; height: 260px; left: 50%; transform: translateX(-50%); }
+  .ribbon-horizontal { width: 260px; height: 25px; top: 50%; transform: translateY(-50%); }
+
+  .bow {
+    position: absolute; width: 90px; height: 90px;
+    top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
+  }
+  .bow .loop { position: absolute; width: 45px; height: 65px; background: linear-gradient(45deg, #ff4a91, #ff6fb5); border-radius: 50% 50% 0 50%; transform-origin: bottom center; box-shadow: 0 3px 6px rgba(0,0,0,0.3); }
+  .bow .loop.left { transform: rotate(-45deg); left: -10px; top: 0; }
+  .bow .loop.right { transform: rotate(45deg); right: -10px; top: 0; }
+  .bow .knot { position: absolute; width: 35px; height: 35px; background: linear-gradient(45deg, #ff2d75, #ff4a91); border-radius: 50%; top: 27px; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+
+  /* Gift card */
+  .gift-card {
+    width: 460px; max-width: 90%; height: auto; background: white; border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); padding: 40px; text-align: center;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.8s ease, opacity 0.5s ease; overflow: hidden; z-index: 5;
+    box-sizing: border-box;
+  }
+  .gift-card.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+
+  .gift-card h1 {
+    margin: 0; font-size: 36px; font-family: 'Pacifico', cursive;
+    background: linear-gradient(135deg, #ff6fb5, #ff9ce3); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  }
+  .gift-card p {
+    font-size: 20px; color: #6a0dad; margin-top: 20px; line-height: 1.5;
+    font-weight: 600; word-wrap: break-word;
+  }
+
+  /* Confetti and kisses */
+  .heart, .kiss { position: absolute; width: 22px; height: 22px; transform: rotate(-45deg); animation: float 5s linear infinite; opacity: 0.8; }
+  .heart { background: pink; }
+  .heart::before, .heart::after { content: ""; position: absolute; width: 22px; height: 22px; background: pink; border-radius: 50%; }
+  .heart::before { top: -11px; left: 0; } .heart::after { left: 11px; top: 0; }
+  .kiss { background: #ff4a91; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
+
+  @keyframes float { 0% { transform: translate(-50%, -50%) translateY(0) rotate(-45deg); opacity: 1;} 100% { transform: translate(-50%, -50%) translateY(-300px) rotate(-45deg); opacity: 0;} }
+
+  /* Camera overlay */
+  .camera-overlay {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    text-align: center; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s ease;
+  }
+  .camera-overlay.show { transform: translate(-50%, -50%) scale(1); }
+  .camera-overlay img {
+    width: 140px; height: 140px; border-radius: 25px;
+    background: linear-gradient(135deg, #e3a7f3, #f8b0d4);
+    padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .camera-overlay p {
+    font-size: 32px; color: #ff6fb5; font-weight: bold;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3); margin-top: 20px;
+  }
+
+  /* Cat photo */
+  .cat-frame {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; text-align: center; z-index: 10;
+  }
+  .cat-frame img {
+    width: 300px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .cat-frame p {
+    font-size: 26px; color: #6a0dad; margin-top: 15px; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="gift-box" id="giftBox" onclick="startSequence()">
+  <div class="ribbon-vertical"></div>
+  <div class="ribbon-horizontal"></div>
+  <div class="bow">
+    <div class="loop left"></div>
+    <div class="loop right"></div>
+    <div class="knot"></div>
+  </div>
+</div>
+
+<div class="gift-card" id="giftCard">
+  <h1>💖🎂Doğum Günün Kutlu Olsun Balım</h1>
+  <p>İyi ki varsın aşkım. Seni çooook seviyorum. Yeni yaşının her günü bir öncekinden daha güzel olsun. Birbirinden güzel insanlar, fırsatlar, huzur dolu anlar olsun hep hayatında. İyi ki İYİ Kİ varsın💞🌸 (sürpriz için bekle)</p>
+</div>
+
+<div class="camera-overlay" id="cameraOverlay">
+  <img src="https://img.icons8.com/ios-filled/100/camera.png" alt="Camera">
+  <p>Gülümse 📸</p>
+</div>
+
+<div class="cat-frame" id="catFrame">
+  <img src="https://media1.tenor.com/m/pv0FSK0tt4UAAAAd/cute-cat.gif" alt="Cat Photo">
+  <p>Yeni yaşının ilk fotosu 🐱</p>
+</div>
+
+<script>
+function startSequence() {
+  const card = document.getElementById('giftCard');
+  const camera = document.getElementById('cameraOverlay');
+  const cat = document.getElementById('catFrame');
+  const box = document.getElementById('giftBox');
+
+  // Show gift card
+  card.classList.add('show');
+
+  // Confetti and kisses
+  for (let i=0;i<50;i++){
+    const confetti=document.createElement('div');
+    confetti.classList.add('heart');
+    confetti.style.left=Math.random()*window.innerWidth+'px';
+    confetti.style.background=`hsl(${Math.random()*360}, 70%, 70%)`;
+    confetti.style.animationDuration=(2+Math.random()*3)+'s';
+    document.body.appendChild(confetti);
+    setTimeout(()=>{confetti.remove()},3000);
+  }
+  for (let i=0;i<25;i++){
+    const kiss=document.createElement('div');
+    kiss.classList.add('kiss');
+    kiss.style.left=Math.random()*window.innerWidth+'px';
+    kiss.style.top=Math.random()*window.innerHeight+'px';
+    kiss.style.animationDuration=(3+Math.random()*2)+'s';
+    document.body.appendChild(kiss);
+    setTimeout(()=>{kiss.remove()},4000);
+  }
+
+  // Sequence timings
+  setTimeout(()=>{
+    card.classList.remove('show'); // hide gift card
+    box.style.display = 'none';    // hide gift box
+    camera.classList.add('show');   // show camera
+    setTimeout(()=>{
+      camera.classList.remove('show'); // hide camera
+      cat.style.display = 'block';      // show cat photo
+    },1500); // camera visible 1 second
+  },9000); // gift card visible 7 seconds
+}
+</script>
+
+</body>
+</html>
